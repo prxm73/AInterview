@@ -12,7 +12,11 @@ import moment from "moment";
 import { eq, and } from "drizzle-orm";
 import useSpeechToText from "react-hook-speech-to-text";
 
-function RecordAnswerSection({ mockInterviewQuestion, activeIndex, interviewData }) {
+function RecordAnswerSection({
+  mockInterviewQuestion,
+  activeIndex,
+  interviewData,
+}) {
   const { user } = useUser();
   const [webCamEnabled, setWebCamEnabled] = useState(false);
   const [micPermission, setMicPermission] = useState(true);
@@ -92,13 +96,20 @@ function RecordAnswerSection({ mockInterviewQuestion, activeIndex, interviewData
 
   useEffect(() => {
     if (!isRecording && results.length > 0) {
-      const finalTranscript = results.map((r) => r.transcript).join(" ");
-      setUserAnswer(finalTranscript);
+      const finalTranscript = results
+        .map((r) => r.transcript)
+        .join(" ")
+        .trim();
+      const wordCount = finalTranscript.split(/\s+/).length;
 
-      if (finalTranscript.length < 10) {
-        toast("Answer too short, please re-record.");
+      if (wordCount < 5) {
+        toast("⚠ Answer too short, please re-record.");
+        setUserAnswer("");
+        setResults([]);
         return;
       }
+
+      setUserAnswer(finalTranscript);
 
       const generateFeedback = async () => {
         try {
@@ -112,12 +123,14 @@ function RecordAnswerSection({ mockInterviewQuestion, activeIndex, interviewData
           const result = await getGeminiResponse(prompt);
           const parsed = JSON.parse(result.replace(/```json|```/g, "").trim());
 
-          await db.delete(Usertable).where(
-            and(
-              eq(Usertable.mockIdRef, interviewData?.mockId),
-              eq(Usertable.questionIndex, String(activeIndex))
-            )
-          );
+          await db
+            .delete(Usertable)
+            .where(
+              and(
+                eq(Usertable.mockIdRef, interviewData?.mockId),
+                eq(Usertable.questionIndex, String(activeIndex))
+              )
+            );
 
           await db.insert(Usertable).values({
             mockIdRef: interviewData?.mockId,
@@ -164,7 +177,10 @@ function RecordAnswerSection({ mockInterviewQuestion, activeIndex, interviewData
   return (
     <div className="flex flex-col items-center justify-center p-6">
       {webCamEnabled && webCamAvailable ? (
-        <Webcam mirrored style={{ width: 300, height: 300, borderRadius: 10 }} />
+        <Webcam
+          mirrored
+          style={{ width: 300, height: 300, borderRadius: 10 }}
+        />
       ) : (
         <WebcamIcon className="text-muted-foreground w-40 h-40" />
       )}
@@ -195,7 +211,9 @@ function RecordAnswerSection({ mockInterviewQuestion, activeIndex, interviewData
             {results.map((r, i) => (
               <p key={i}>{r.transcript}</p>
             ))}
-            {interimResult && <p className="italic text-gray-500">{interimResult}</p>}
+            {interimResult && (
+              <p className="italic text-gray-500">{interimResult}</p>
+            )}
           </div>
         )}
         {!isRecording && userAnswer && (

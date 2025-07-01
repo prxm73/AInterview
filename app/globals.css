@@ -1,6 +1,37 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@layer utilities {
+  .glow-border {
+    position: relative;
+    z-index: 0;
+  }
+
+  .glow-border::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(120deg, #7f5af0, #2cb67d, #7f5af0);
+    background-size: 300% 300%;
+    animation: glowBorderMove 4s linear infinite;
+    filter: blur(8px);
+  }
+
+  @keyframes glowBorderMove {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
