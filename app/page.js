@@ -1,6 +1,5 @@
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Page from "./(auth)/sign-in/[[...sign-in]]/page";
+import Page from "./dashboard/(auth)/sign-in/[[...rest]]/page";
 
 export default function Home() {
   return <Page />;
