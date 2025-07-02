@@ -54,7 +54,8 @@ function StartInterview() {
   };
 
   return (
-    <div className="px-4 py-8">
+    <div className="px-4 py-4">
+      <h2 className="text-2xl font-bold text-center mb-4">Interview Questions</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
         {/* Questions */}
         {mockInterviewQuestion && Array.isArray(mockInterviewQuestion) ? (
