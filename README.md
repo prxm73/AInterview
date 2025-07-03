@@ -47,5 +47,3 @@ AInterviewer is an AI-powered mock interview platform designed to help users pra
   - Yes! Retake interviews for any role to improve and track your progress.
 - **Is my data and performance saved?**
   - Yes. All interviews and feedback are saved to your dashboard for review.
-
----
