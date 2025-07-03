@@ -49,5 +49,3 @@ AInterviewer is an AI-powered mock interview platform designed to help users pra
   - Yes. All interviews and feedback are saved to your dashboard for review.
 
 ---
-
-_For more details or a live demo, contact the project owner or visit the deployed application (link, if available)._
